@@ -1,0 +1,159 @@
+*{
+    font-family: 'Inter';
+}
+.lk__inner{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 2rem;
+    .lk__logo{
+        width: 200px;
+    }
+    .lk__content{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        flex-wrap: wrap;
+        .lk__data{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            p{
+                font-weight: 600;
+            }
+        }
+        button.lk__button{
+            height: fit-content;
+            padding: 10px 15px;
+        }
+        @media(max-width: 320px){
+            gap: 10px;
+        }
+    }
+    @media(max-width:650px){
+        flex-direction: column;
+    }
+}
+.tour-list{
+    $darkblue: #1C274C;
+    $lightblue: #6482A3;
+    font-size: 16px;
+    padding: 1rem 2rem 5rem 2rem;
+    padding-top: 3rem;
+    flex-grow: 1;
+    .tour-list__title{
+        display: flex;
+        justify-content: space-between;
+        .tour-list__filter{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            select{
+                font-size: 16px;
+            }
+            @media(max-width:400px){
+                p{
+                    flex-grow: 1;
+                }
+            }
+            @media(max-width: 310px){
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+        }
+        @media(max-width: 600px){
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+    .tours{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        column-gap: 30px;
+        row-gap: 40px;
+        padding-top: 20px;
+        .tour{
+            box-shadow: 14px 15px 17px 0px rgba(19, 26, 52, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 10px 15px;
+            .tour__header{
+                padding-bottom: 1rem;
+                .tour__title{
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                }
+                .tour__route{
+                    color: $darkblue;
+                }
+            }
+            .tour__info{
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                .tour__price-inner{
+                    padding: 10px 0 20px 0;
+                    margin-top: auto;
+                    display: flex;
+                    justify-content: space-between;
+                    p.tour__price{
+                        font-size: 1.2rem;
+                        color: $darkblue;
+                        font-weight: 700;
+                    }
+                    p.tour__cancel{
+                        cursor: pointer;
+                    }
+                }
+            }
+            .tour__cancel-modal{
+                position: fixed;
+                background-color: rgba(167, 167, 167, 0.6);
+                z-index: 10000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .tour__cancel{
+                    background-color: white;
+                    padding: 30px;
+                    width: 500px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    p{
+                        font-size: 1.5rem;
+                    }
+                    .tour__cancel-buttons{
+                        display: flex;
+                        justify-content: space-around;
+                        gap: 15px;
+                        button{
+                            padding: 10px 20px;
+                            font-size: 1.2rem;
+                            border: none;
+                            color: white;
+                            text-align: left;
+                            background-color: #1C274C;
+                        }
+                    }
+                }
+            }
+        }
+        @media(max-width:650px){
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media(max-width: 600px){
+            padding-top: 30px;
+        }
+    }
+    @media(max-width: 320px){
+        padding-top: 0.3rem;
+    }
+}

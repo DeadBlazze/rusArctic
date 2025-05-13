@@ -1,0 +1,101 @@
+.contacts{
+    h1{
+        padding: 2rem 0;
+        text-align: center;
+        font-weight: 500;
+        color: #000000;
+        font-family: "Inter", sans-serif;
+    }
+    .contacts__map{
+        // padding-right: 13.28125%;
+        gap: 50px;
+        display: flex;
+        img{
+            max-width: calc(100% - 450px);
+            object-fit: cover;
+            object-position: right;
+            @media(max-width:745px){
+                width: 100%;
+                max-width: unset;
+            }
+        }
+        p{
+            width: 400px;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            @media(max-width:745px){
+                padding: 0 5% 2rem 5%;
+                width: fit-content;
+            }
+        }
+        @media(max-width:745px){
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+    .contacts__person{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 120px;
+        margin: 120px 13.28125%;
+        column-gap: 60px;
+        &-card{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 30px;
+            .contacts__person-img{
+                height: 330px;
+                img{
+                    object-fit: cover;
+                    object-position: top;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .contacts__person-text{
+                .position{
+                    text-transform: uppercase;
+                    font-size: 1.4rem;
+                }
+                .fio{
+                    padding-top: 30px;
+                }
+                .tel{
+                    padding-top: 30px;
+                    display: flex;
+                    gap: 10px;
+                    align-items: center; 
+                }
+                .email{
+                    gap: 10px;   
+                    display: flex;
+                    align-items: center; 
+                    padding-top: 20px;
+                }
+                img{
+                    width: 30px;
+                }
+            }
+            @media (max-width: 630px){
+                column-gap: 15px;
+            }
+            @media (max-width: 500px){
+                grid-template-columns: 1fr;
+                row-gap: 20px;
+                .contacts__person-text{
+                    font-size: 2rem;
+                }
+            }
+        }
+        @media (max-width: 1200px){
+            grid-template-columns:1fr;
+            row-gap: 90px;
+        }
+        @media (max-width: 630px){
+            margin: 100px 5%;
+        }
+        @media (max-width: 500px){
+            row-gap: 70px;
+        }
+    }
+}

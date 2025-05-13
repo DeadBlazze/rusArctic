@@ -1,0 +1,267 @@
+.wrapper{
+    padding: 0 10%;
+}
+h2{
+    text-transform: uppercase;
+}
+.banner{
+    width: 100%;
+    background: no-repeat url(../../assets/images/home/homeBanner.jpeg);
+    background-size: cover;
+    background-position: center;
+    padding: 7rem 0 0 10%;
+    @media (max-width: 330px){
+        padding: 7rem 0 0 6%;
+    }
+    p{
+        font-style: italic;
+        font-size: 20px;
+        text-transform: uppercase;
+        color:#455d77;
+        padding-bottom: 2.6rem;
+    }
+    h1{
+        font-size: 5.5rem;
+        text-transform: uppercase;
+        color: #18222a;
+        padding-bottom: 2.6rem;
+        @media (max-width: 380px){
+            font-size: 4rem;
+        }
+    }
+    button{
+        color: #fff;
+        background-color: #455D77;
+        padding: 20px 30px;
+        border: none;
+        font-size: 15px;
+        @media (max-width: 350px){
+            padding: 15px 20px;
+        }
+    }
+    span{
+        display: block;
+        margin-top: 20rem;
+        padding: 0 50px 40px 0;
+        text-align: end;
+        font-size: 16px;
+    }
+}
+.about{
+    position: relative;
+    padding: 6rem 0 4rem 10%;
+    display: flex;
+    gap: 5rem;
+    @media (max-width: 1000px){
+       flex-direction: column;
+       padding: 6rem 10% 6rem 10%;
+    }
+    h2{
+        margin-bottom: 4rem;
+    }
+    .about__text{
+        width: 700px;
+        button{
+            margin-top: 160px;
+            width: 330px;
+            color: #455d77;
+            border: 2px solid #455d77;
+            padding: 18px 116px;
+            font-size: 18px;
+        }
+        @media (max-width: 1000px){
+            width: fit-content; 
+            button{
+                margin-top: 50px;
+                width: 100%;
+                padding: 18px 0px;
+            }
+        }
+    }
+    .about__image{
+        display: flex;
+        flex-grow: 1;
+        @media(max-width: 1000px){
+            order: -1;
+        }
+    }
+    .about__image img{
+        width: 100%;
+        object-fit: cover;
+    }
+    .about__bg-gray{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        width: calc(15% + 700px);
+        height: 100%;
+        background-color: rgb(236, 236, 236);
+        @media (max-width: 1200px){
+            width: calc(15% + 500px);
+        }
+        @media (max-width: 1000px){
+            width: 100%;
+        }
+    }
+}
+.kinds{
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 95%, rgba(255, 255, 255, 0.8) 100%), url(../../assets/images/home/kinds-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 7%;
+    padding-bottom: 5rem;
+    h2{
+        padding: 3rem 0 3rem 0;
+    }
+    .kinds__inner{
+        display: flex;
+        width: 100%;
+        gap: 30px;
+        @media (max-width:1100px){
+            flex-direction: column;
+        }
+        .kinds__text{
+            padding-top: 3rem;  
+            width: 30%;
+            flex-shrink: 0;
+            color: #636E76;
+            @media (max-width:1100px){
+                width: 100%;
+                padding-top: 1rem;  
+            }
+        }
+        .kinds__images{
+            display: flex;
+            justify-content: space-between;
+            img{
+                width: 32%;
+                height: 350px;
+                object-fit: cover;
+                object-position: 60% 0%;
+            }
+            @media (max-width:1100px){
+                order: -1;
+            }
+            @media (max-width:770px){
+                display: grid;
+                grid-template: auto auto/ auto auto;
+                gap: 30px;
+                img{
+                    width: 100%;
+                    height: 350px;
+                    object-fit: cover;
+                    object-position: 60% 0%;
+                }
+                img:last-child{
+                    grid-column: span 2;
+                    object-position: center center;
+                }
+            }
+            @media (max-width:540px){
+                grid-template: auto auto auto/ auto;
+                img:last-child{
+                    grid-column: 1;
+                    object-position: center center;
+                }
+            }
+            @media (max-width:350px){
+                img{
+                    object-fit: contain;
+                    height: auto;
+                }
+            }
+        }
+    }
+    
+}
+.travel{
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 5%), url(../../assets/images/home/kinds-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 10%;
+    padding: 4rem 0 4rem 0;
+    position: relative;
+    h2{
+        position: relative;
+        margin-bottom: 2.5rem;
+        z-index: 2;
+    }
+    .travel__inner{
+        position: relative;
+        z-index: 2;
+        display: flex;
+        gap: 50px;
+        @media (max-width: 1000px){
+            flex-direction: column;
+        }
+        .travel__image{
+            width: 50%;
+            flex-shrink: 0;
+            img{
+                width: 100%;
+                height: 650px;
+                object-fit: cover;
+            }
+            @media (max-width: 1000px){
+                width: 100%;
+                img{
+                    height:350px;
+                    object-fit: cover;
+                    object-position: bottom;
+                }
+            }
+        }
+        .travel__text{
+            padding-top: 3rem;  
+            color: #636E76;
+            button{
+                margin-top: 50px;
+                width: 330px;
+                color: #455d77;
+                border: 2px solid #455d77;
+                padding: 18px 116px;
+                font-size: 18px;
+            }
+            @media (max-width: 1000px){
+                width: fit-content; 
+                padding: 0 10%;
+                button{
+                    margin-top: 50px;
+                    width: 100%;
+                    padding: 18px 0px;
+                }
+            }
+        }
+    }
+    .travel__bg-gray{
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 0;
+        width: 62%;
+        height: 100%;
+        background-color: rgb(236, 236, 236);
+        @media (max-width: 1000px){
+            display: none;
+        }
+    }
+}
+.partners{
+    padding: 8rem 0 4rem 0;
+    .partners__images{
+        display: grid;
+        gap: 16px;
+        padding: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        img{
+            width: 100%;
+        }
+    }
+
+}
+@media (max-width:1000px){
+    html{
+        font-size: 12px;
+    }
+}

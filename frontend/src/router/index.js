@@ -1,0 +1,60 @@
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../pages/Home/Home.vue';
+import Tours from '../pages/Tours/Tours.vue';
+import Contacts from '../pages/Contacts/Contacts.vue';
+import Reg from '../pages/Reg/Reg.vue';
+import Login from '../pages/Login/Login.vue';
+import UserCabinet from '../pages/UserCabinet/UserCabinet.vue';
+import Admin from '../pages/Admin/admin.vue';
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/tours',
+      component: Tours
+    },
+    {
+      path: '/contacts',
+      component: Contacts
+    },
+    {
+      path: '/reg',
+      component: Reg
+    },
+    {
+      path: '/auth',
+      component: Login
+    },
+    {
+      path: '/user-cabinet',
+      component: UserCabinet
+    },
+    {
+      path: '/admin',
+      component: Admin
+    },
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            el: to.hash,  // Используем 'el' вместо 'selector' в Vue Router v4
+            behavior: 'smooth',
+          });
+        }, 100);
+      });
+    } else if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 }  // Используем 'top' вместо 'x' и 'y' в Vue Router v4
+    }
+  }
+});
+
+export default router; 

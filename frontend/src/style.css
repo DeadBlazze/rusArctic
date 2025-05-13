@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Regular.woff2');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Medium.woff2');
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-SemiBold.woff2');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('assets/fonts/Inter-Bold.woff2');
+    font-weight: 700;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+#app{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+a{
+    all: unset;
+    cursor: pointer;
+}
+button{
+    cursor: pointer;
+}
+p{
+    font-size: 16px;
+}
+ul{
+    list-style: none;
+}
+h2{
+    font-size: 1.9rem
+}
+.swiper-button-prev:after, .swiper-button-next:after{
+    content: none !important;
+}
+.swiper-button-prev, .swiper-button-next{
+    width: 40px !important;
+    background-image: url(assets/images/UI/swiper/arrow-left.svg);
+    background-repeat: no-repeat;
+}
+.swiper-button-next{
+    background-image: url(assets/images/UI/swiper/arrow-right.svg);
+}
+.tippy-box[data-theme~='custom'] {
+    background-color: rgba(100, 130, 163, 0.9);;
+    color: white;
+    font-size: 20px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    width: 220px;
+    z-index: 5;
+
+}
