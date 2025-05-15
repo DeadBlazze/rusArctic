@@ -19,7 +19,6 @@
 </template>
 <script>
 import axios from 'axios'
-import { useUserStore } from '../../stores/user'
 export default {
   name: 'Login',
   data() {
@@ -61,7 +60,11 @@ export default {
         localStorage.setItem('token', response.data.access_token)
         let role = response.data.roles[0]
         console.log(role)
-        useUserStore().setUserRole(role)
+
+        // Прокидываем роль в header.vue
+        const header = this.$root.$refs.header;
+        header.setUserRole(role);
+
         if(role === 'user') this.$router.push('/user-cabinet')
         if(role === 'admin') this.$router.push('/admin')
       } catch (error) {

@@ -5,7 +5,14 @@ import Contacts from '../pages/Contacts/Contacts.vue';
 import Reg from '../pages/Reg/Reg.vue';
 import Login from '../pages/Login/Login.vue';
 import UserCabinet from '../pages/UserCabinet/UserCabinet.vue';
+
 import Admin from '../pages/Admin/Admin.vue';
+import AdminRequests from '../components/Admin/AdminRequests.vue';
+import Dashboard from '../components/Admin/Dashboard.vue';
+import AddTour from '../components/Admin/AddTour.vue';
+import EditTour from '../components/Admin/EditTour.vue';
+import EditTourList from '../components/Admin/EditTourList.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -36,7 +43,29 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      component: Admin
+      component: Admin,
+      children: [
+        {
+          path: '',
+          component: AdminRequests
+        },
+        {
+          path: 'dashboard',
+          component: Dashboard
+        },
+        {
+          path: 'add-tour',
+          component: AddTour
+        },
+        {
+          path: 'edit-tour-list',
+          component: EditTourList
+        },
+        {
+          path: 'edit-tour/:id_tour',
+          component: EditTour
+        }
+      ]
     },
   ],
   scrollBehavior(to, from, savedPosition) {

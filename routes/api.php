@@ -21,5 +21,6 @@ Route::post('/user-cancel-tour', [ToursController::class, 'userCancelTour']);
 
 Route::get('/admin-get-streams',[ToursController::class, 'adminGetStreams']);
 Route::post('/admin-delete-user-stream',[ToursController::class, 'adminDeleteUserStream']);
+Route::get('/admin-get-tour-info/{id}', [ToursController::class, 'adminGetTourInfo']);
 
 Route::get('/get-user-data', [UserController::class, 'getUserData']);

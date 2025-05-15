@@ -110,6 +110,12 @@ class ToursController extends Controller
         return response()->json(['result'=>$res]);
     }
 
+    public function adminGetTourInfo($id){
+        $id_tour = $id;
+        $tourInfo = DB::select('SELECT * FROM tours WHERE id_tour = 2', [$id_tour]);
+        $streams = DB::select('');
+        return response()->json(['id'=>$id_tour]);
+    }
     public function getUserStreams(Request $request){
         $payload = $this->getPayloadFromToken();
         if (isset($payload['err'])) {

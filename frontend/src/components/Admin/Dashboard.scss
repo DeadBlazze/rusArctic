@@ -1,0 +1,14 @@
+.admin-dashboard{
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 30px;
+    a{
+        height: fit-content;
+        padding: 10px 15px;
+        background-color: #9aa8b8;
+        border: 1px solid gray;
+        border-radius: 3px;
+        font-size: 13.3px;
+    }
+}

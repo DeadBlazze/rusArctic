@@ -73,6 +73,11 @@ export default {
         logout(){
             localStorage.removeItem('token')
             this.token = null
+
+            // Обнуляем роль в header.vue
+            const header = this.$root.$refs.header;
+            header.unsetRole();
+            
             this.$router.push('/auth')
         },
         async fetchStreams(){
