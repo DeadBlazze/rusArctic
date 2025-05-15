@@ -1,5 +1,5 @@
 <template lang="pug">
-  Header
+  Header(ref='header')
   router-view
   Footer
 </template>

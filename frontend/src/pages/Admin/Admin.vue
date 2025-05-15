@@ -2,7 +2,16 @@
 .lk
     button.lk__button(@click="logout") Выйти
 .stream-list
-    h1 Заявки пользователей
+    .stream-list__title
+        h2 Заявки пользователей
+        .stream-list__filter
+            p Фильтр:
+            select(v-model='filterKey') 
+                option(value='data+') Сначала новые
+                option(value='data-') Сначала старые
+                option(value='fio') ФИО
+                option(value='start_point') Точка отправления 
+                option(value='title') Название тура
     .streams
         .stream(v-for='stream in streams' :key='stream.id' v-if='streams[0]')
             .stream__header
@@ -18,7 +27,7 @@
                 <br>
                 .stream__item {{ stream.description }}
                 .stream__item {{ stream.duration }} дней
-                .stream__item {{ stream.includes }} дней
+                .stream__item {{ stream.includes }}
                 .stream__item Отправление: {{ stream.start_time }}
                 .stream__item Город отправления: {{ stream.start_point }}
                 .stream__price {{ stream.price }} ₽
@@ -39,7 +48,8 @@ export default {
     data() {
         return {
             streams: [],
-            deleteClick: null
+            deleteClick: null,
+            filterKey: 'data+',
         }
     },
     async mounted() {
@@ -81,11 +91,27 @@ export default {
                 this.deleteClick = false
             }
         },
+        sortTours(){
+            let key = this.filterKey
+            const sortMethods = {
+                'data+': (a,b) => new Date(a.timestamp) - new Date(b.timestamp),
+                'data-': (a,b) => new Date(b.timestamp) - new Date(a.timestamp),
+                'fio': (a,b) => a.title.localeCompare(b.title),
+                'start_point': (a,b) => a.start_point.localeCompare(b.start_point),
+                'title': (a,b) => a.title.localeCompare(b.title),
+            }
+            this.streams.sort(sortMethods[key])
+        },
         logout(){
             localStorage.removeItem('token')
             this.token = null
             useUserStore().unsetRole()
             this.$router.push('/auth')
+        }
+    },
+     watch: {
+        filterKey(){
+            this.sortTours();
         }
     }
 }

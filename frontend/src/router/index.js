@@ -5,7 +5,7 @@ import Contacts from '../pages/Contacts/Contacts.vue';
 import Reg from '../pages/Reg/Reg.vue';
 import Login from '../pages/Login/Login.vue';
 import UserCabinet from '../pages/UserCabinet/UserCabinet.vue';
-import Admin from '../pages/Admin/admin.vue';
+import Admin from '../pages/Admin/Admin.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

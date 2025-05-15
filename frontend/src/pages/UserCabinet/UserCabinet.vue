@@ -86,7 +86,7 @@ export default {
         sortTours(){
             const key = this.filterKey;
             const sortMethods = {
-                id_tour: (a,b) => a.id_tour - b.id_tour,
+                id_tour : (a,b) => a.id_tour - b.id_tour,
                 price: (a,b) => a.price - b.price,
                 title: (a,b) => a.title.localeCompare(b.title),
                 start_time: (a,b) => new Date(a.start_time) - new Date(b.start_time),

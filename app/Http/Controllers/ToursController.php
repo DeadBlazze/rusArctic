@@ -64,14 +64,16 @@ class ToursController extends Controller
         }
         $allstreams = DB::select(
         'SELECT * FROM (SELECT id_tour, description, title, duration, route, includes, price FROM tours WHERE is_active = 1) AS activeTours
-        INNER JOIN 
-            (SELECT id_tour, start_time, start_point, id_stream, StreamsUserAndTourId.id_user, fio, email, tel FROM 
-                (SELECT id_tour, start_time, start_point, tours__streams.id_stream, id_user FROM tours__streams
-                INNER JOIN 
-                    (SELECT * FROM `users__streams`) AS streams
-                ON tours__streams.id_stream = streams.id_stream) AS StreamsUserAndTourId
-            INNER JOIN users ON StreamsUserAndTourId.id_user = users.id_user) AS fullUserAndStream
-        ON activeTours.id_tour = fullUserAndStream.id_tour;');
+                        INNER JOIN 
+                            (SELECT id_tour, start_time, start_point, id_stream, StreamsUserAndTourId.id_user, fio, email, tel, timestamp FROM 
+                                (SELECT id_tour, start_time, start_point, tours__streams.id_stream, id_user, timestamp FROM tours__streams
+                                    INNER JOIN 
+                                        (SELECT * FROM `users__streams`) AS streams
+                                    ON tours__streams.id_stream = streams.id_stream) AS StreamsUserAndTourId
+                            INNER JOIN users 
+                            ON StreamsUserAndTourId.id_user = users.id_user) AS fullUserAndStream
+                        ON activeTours.id_tour = fullUserAndStream.id_tour  
+                ORDER BY `fullUserAndStream`.`timestamp` ASC');
         return response()->json( $allstreams);
     }
 

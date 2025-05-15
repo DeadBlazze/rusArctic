@@ -13,7 +13,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/auth', [AuthController::class, 'auth']);
 
 Route::get('/get-tours', [ToursController::class, 'getTours']);
-Route::post('/get-jwt', [ToursController::class, 'getJwt']);
+Route::get('/get-jwt', [ToursController::class, 'getJwt']);
 Route::post('/get-streams', [ToursController::class, 'getStreams']);
 Route::post('/record-user-stream', [ToursController::class, 'recordUserStream']);
 Route::get('/get-user-streams', [ToursController::class, 'getUserStreams']);
