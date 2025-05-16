@@ -69,6 +69,7 @@ export default {
         },
         deleteStream(id_stream, id_user) {
             this.deleteClick = { id_stream, id_user }
+            document.body.style.overflowY = 'hidden'
         },
         async confirmDelete(userSelect){
             if(userSelect){
@@ -87,6 +88,7 @@ export default {
                 this.loadStreams();
             }
             this.deleteClick = null
+            document.body.style.overflowY = 'auto'
         },
         sortTours(){
             let key = this.filterKey

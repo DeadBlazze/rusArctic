@@ -30,14 +30,14 @@
                 .tour__item Город отправления: {{ tour.start_point }}
                 .tour__price-inner
                     p.tour__price {{ tour.price }} ₽
-                    p.tour__cancel(@click='tourCancelOpen(tour.id_tour)') Отменить
-            .tour__cancel-modal(v-if='tourCancel')
-                .tour__cancel
-                    p Вы действительно хотите отменить заявку на тур?
-                    .tour__cancel-buttons 
-                        button(@click='tourCancelRequest(tour.id_stream)') Да
-                        button(@click='tourCancelClose()') Нет
+                    p.tour__cancel(@click='tourCancelOpen(tour.id_stream)') Отменить
         h3(v-else) *Нет актуальных заявок
+    .tour__cancel-modal(v-if='tourCancel')
+        .tour__cancel
+            p Вы действительно хотите отменить заявку на тур?
+            .tour__cancel-buttons 
+                button(@click='tourCancelRequest()') Да
+                button(@click='tourCancelClose()') Нет
 </template>
 <script>
 import axios from 'axios'
@@ -98,17 +98,18 @@ export default {
             }
             this.tours.sort(sortMethods[key])
         },
-        tourCancelOpen(tourId){
-            this.tourCancel = tourId
+        tourCancelOpen(id_stream){
+            this.tourCancel = id_stream
             document.body.style.overflowY = 'hidden'
         },
         tourCancelClose(){
-            this.tourCancel = false
+            this.tourCancel = null
             document.body.style.overflowY = 'auto'
         },
-        async tourCancelRequest(tourId){
+        async tourCancelRequest(){
+            const id_stream = this.tourCancel
             let response = await axios.post(import.meta.env.VITE_API_URL + '/user-cancel-tour', {
-                "id_tour": tourId
+                "id_stream": id_stream
             },
             {
                 headers:{

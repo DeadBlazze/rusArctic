@@ -39,7 +39,7 @@ class ToursController extends Controller
             $streams);
     }
     public function userCancelTour(Request $request){
-        $id_stream = $request->input('id_tour');
+        $id_stream = $request->input('id_stream');
         $payload = $this->getPayloadFromToken();
         if (isset($payload['err'])) {
             return response()->json(['Ошибка авторизации' => $payload['err']],401);
