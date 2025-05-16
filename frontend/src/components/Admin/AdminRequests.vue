@@ -18,7 +18,7 @@
                         .stream__route {{ stream.route }}
                     img.stream__delete(src="../../assets/images/UI/icons/cross.svg" 
                     title="Удалить заявку на поток"
-                    @click="deleteStream()")
+                    @click="deleteStream(stream.id_stream, stream.id_user)")
                 .stream__info
                     .stream__item {{stream.fio}}
                     .stream__item Почта: {{stream.email}}
@@ -30,15 +30,15 @@
                     .stream__item Отправление: {{ stream.start_time }}
                     .stream__item Город отправления: {{ stream.start_point }}
                     .stream__price {{ stream.price }} ₽
-                .delete-confirm__modal(v-if='deleteClick')
-                    .modal__inner
-                        .modal__title
-                            h3 Удалить заявку на тур?
-                            img(src='../../assets/images/UI/icons/cross.svg' @click="confirmDelete(false)")
-                        .modal__buttons
-                            button(@click='confirmDelete(true, stream.id_stream, stream.id_user)') Да
-                            button(@click='confirmDelete(false)') Нет
             h3(v-else) *Нет актуальных заявок
+        .delete-confirm__modal(v-if='deleteClick')
+            .modal__inner
+                .modal__title
+                    h3 Удалить заявку на тур?
+                    img(src='../../assets/images/UI/icons/cross.svg' @click="confirmDelete(false)")
+                .modal__buttons
+                    button(@click='confirmDelete(true)') Да
+                    button(@click='confirmDelete(false)') Нет
 </template>
 <script>
 import axios from 'axios'
@@ -67,11 +67,12 @@ export default {
             this.streams = response.data;
             this.sortTours()
         },
-        deleteStream(){
-            this.deleteClick = true
+        deleteStream(id_stream, id_user) {
+            this.deleteClick = { id_stream, id_user }
         },
-        async confirmDelete(userSelect, id_stream, id_user){
+        async confirmDelete(userSelect){
             if(userSelect){
+                const { id_stream, id_user } = this.deleteClick
                 const response = await axios.post(
                     import.meta.env.VITE_API_URL + '/admin-delete-user-stream', 
                     {
@@ -84,11 +85,8 @@ export default {
                     }
                 )
                 this.loadStreams();
-                this.deleteClick = false
             }
-            else{
-                this.deleteClick = false
-            }
+            this.deleteClick = null
         },
         sortTours(){
             let key = this.filterKey
