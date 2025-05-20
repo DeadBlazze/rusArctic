@@ -1,3 +1,137 @@
 .edittour{
     flex: 1;
+    flex: 1;
+  .edittour-inner{
+    margin: 0 10% 50px 10%;
+    padding: 15px;
+    box-shadow: 14px 15px 17px 0px rgba(19, 26, 52, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    h2{
+      margin-bottom: 5px;
+    }
+    .input-group{
+      display: flex;
+      gap: 10px;
+      label{
+        font-size: 16px;
+        @media (max-width: 500px){
+          order: -1;
+        }
+      }
+        input[type='text']{
+        height: 25px;
+        display: flex;
+        flex-grow: 1;
+        max-width: 400px;
+        min-width: 90px;
+        padding: 5px;
+      }
+      textarea{
+        padding: 5px;
+        display: flex;
+        flex-grow: 1;
+        max-width: 400px;
+        min-width: 90px;
+      }
+      @media (max-width: 500px){
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+@media(max-width: 500px){
+    gap: 20px;
+}
+.streams{
+    p{
+        margin-bottom: 10px;
+    }
+    .stream{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border: 1px solid #ccc;;
+        padding: 10px;
+        .stream-title{
+            display: flex;
+            justify-content: space-between;
+            img{
+                width: 20px;
+                cursor: pointer;
+            }
+            p{
+              margin: 0;
+            }
+        }
+        label{
+          font-size: 16px;
+          @media (max-width:421px){
+            order: -1;
+          }
+        }
+        .stream-date{
+          display: flex;
+          gap: 10px;
+          input{
+            height: 25px;
+            padding: 5px;
+            max-width: 150px;
+            display: flex;
+            flex-grow: 1;
+          }
+          @media (max-width: 421px){
+            flex-direction: column;
+            gap: 2px;
+          }
+        }
+        .stream-startPoint{
+          display: flex;
+          gap: 10px;
+          input{
+            height: 25px;
+            display: flex;
+            max-width: 150px;
+            padding: 5px;
+          }
+          @media (max-width: 421px){
+            flex-direction: column;
+            gap: 2px;
+          }
+        }
+      }
+      .streamLoop{
+        border-top: none;
+      }
+      button{
+        margin-top: 10px;
+      }
+      .streams-btns{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+    }
+    @media (max-width: 800px){
+      margin: 0 3% 50px 3%;
+    }
+  }
+  button{
+    height: fit-content;
+    padding: 5px 10px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    font-size: 13.3px;
+  }
+  input[type='submit']{
+    height: fit-content;
+    padding: 10px 15px;
+    align-self: flex-end;
+    background-color: rgb(240, 240, 240);
+    border: 1px solid gray;
+    border-radius: 3px;
+    font-size: 13.3px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
 }

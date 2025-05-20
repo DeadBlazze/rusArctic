@@ -38,7 +38,7 @@
           <label for="tour_includes">Что включает</label>
         </div>
       </div>
-      <uploadPhoto></uploadPhoto>
+      <uploadPhoto @uploadPhotos="uploadPhotos"></uploadPhoto>
       <div class="streams">
         <p>Потоки на тур (1 обязателен)</p>
         <div class="stream">
@@ -55,7 +55,7 @@
         <div class="stream streamLoop" v-for="(stream, index) in formData.tourStreams.slice(1)" :key="stream.id">
           <p>Поток {{ index+2 }}</p>
           <div class="stream-date">
-            <input type="date" name="" :id="'date'+(index+2)" v-model="formData.tourStreams[index+1].date">
+            <input type="date" name="" :id="'date'+(index+2)" v-model="formData.tourStreams[index+1].date" placeholder="дд.мм.гггг">
             <label :for="'date'+(index+2)">Дата отправления</label>
           </div>
           <div class="stream-startPoint">
@@ -68,8 +68,7 @@
           <button @click="delStream()">Удалить</button>
         </div>
       </div>
-      <input type="submit" value="Отправить">
-
+      <input type="submit" value="Отправить" @click="sendData()">
     </div>
   </div>
 </template>
@@ -84,25 +83,98 @@ export default {
   data() {
     return {
       formData: {
-        tourTitle: null,
-        tourRoute: null,
-        tourDuration: null,
-        tourDescription: null,
-        tourPrice: null,
-        tourIncludes: null,
-        tourStreams: [{id: 0, date: null, start_point: null}]
-      }
+        tourTitle: '',
+        tourRoute: '',
+        tourDuration: '',
+        tourDescription: '',
+        tourPrice: '',
+        tourIncludes: '',
+        tourStreams: [{id: 0, date: '', start_point: ''}],
+      },
+      formDataFromChild: null,
+      errors: {}
     }
   },
   methods: {
     addStream(){
       const idStream = this.formData.tourStreams.slice(-1)[0].id
-      this.formData.tourStreams.push({id: idStream, date: null, start_point: null})
+      this.formData.tourStreams.push({id: idStream, date: '', start_point: ''})
     },
     delStream(){
       const lastEl = this.formData.tourStreams.length-1
       if(lastEl===0) {return} // первый поток удалять нельзя
       this.formData.tourStreams.splice(lastEl, 1)
+    },
+    uploadPhotos(formData){
+      this.formDataFromChild = formData
+    },
+    async sendData(){
+      if(!this.validateForm()){
+        const errorMessages = 'Исправьте ошибки в форме: \n'+ Object.values(this.errors).join('\n');
+        alert(errorMessages);
+        return
+      }
+      this.formDataFromChild.delete('json');
+      this.formDataFromChild.append('json', JSON.stringify(this.formData));
+      console.log([...this.formDataFromChild.entries()])
+      try {
+        const response = await axios.post(import.meta.env.VITE_API_URL+'/admin-create-tour', 
+        this.formDataFromChild, 
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+        console.log('Success:', response.data);
+        alert("Успешно загружено")
+        sessionStorage.removeItem('tours')
+        this.$router.push('/tours')
+      } catch (error) {
+        console.error('Error:', error);
+        alert("Ошибка загрузки тура")
+      }
+    },
+    validateForm(){
+      this.errors = {}
+      let valid = true
+      if (!/^[А-Яа-яЁёA-Za-z\s\-]{1,100}$/.test(this.formData.tourTitle)) {
+        this.errors.tourTitle = 'Заголовок от 1 до 100 символов без !?*^&#$<+'
+        valid = false
+      }
+      if (!/^[А-Яа-яЁёA-Za-z\s\-\–]{1,100}$/.test(this.formData.tourRoute)) {
+        this.errors.tourRoute = 'Маршрут от 1 до 100 символов без !?*^&#$<+'
+        valid = false
+      }
+      if (!/^[А-Яа-яЁёA-Za-z0-9\s\/]{1,100}$/.test(this.formData.tourDuration)) {
+        this.errors.tourDuration = 'Длительность от 1 до 100 символов без !?*^&#$<+-'
+        valid = false
+      }
+      if (!/^[А-Яа-яЁёA-Za-z\s./(),\-\–]{1,200}$/.test(this.formData.tourDescription)) {
+        this.errors.tourDescription = 'Описание от 1 до 200 символов без !?*^&#$<+-""'
+        valid = false
+      }
+      if (!/^[0-9]{1,10}$/.test(this.formData.tourPrice)) {
+        this.errors.tourPrice = 'Стоимость целое число без пробелов'
+        valid = false
+      }
+      if (!/^[А-Яа-яЁёA-Za-z\s./(),]{1,200}$/.test(this.formData.tourIncludes)) {
+        this.errors.tourIncludes = 'Что включает от 1 до 200 символов без !?*^&#$<+-""'
+        valid = false
+      }
+      if(!this.formData.tourStreams.every(stream => /^[А-Яа-яЁёA-Za-z\s\-\–]{1,100}$/.test(stream.start_point))){
+        this.errors.streamsError = 'Названия точек отправления от 1 до 100 символов без !?*^&#$<+""'
+        valid = false
+      }
+      if(!this.formData.tourStreams.every(stream => stream.date.length > 0)){
+        this.errors.streamsError = 'У каждого потока должна быть выбрана дата'
+        valid = false
+      }
+      if(!this.formDataFromChild){
+        this.errors.formDataFromChild = 'Загрузите от 1 до 4 картинок'
+        valid = false
+      }
+      return valid
     }
   }
 }

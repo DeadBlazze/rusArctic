@@ -16,7 +16,7 @@ header.header__inner
             li
                 router-link(to="/contacts") Контакты
     .header__lk
-        router-link(:to="!isAdmin ? '/user-cabinet' : '/admin'")
+        a(@click='headerLink()')
             .header__lk-buttons
                 span Личный кабинет
                 img(src='../../assets/images/header/lk-icon.svg')
@@ -37,9 +37,24 @@ header.header__inner
 <script setup>
 import './header.scss'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const userRole = ref(localStorage.getItem('userRole') || 'user'); // Начальное значение роли
 let isMobile = ref(false);
 const isAdmin = computed(() => userRole.value === 'admin');
+
+const headerLink = () => {
+
+    if(localStorage.getItem('token')){
+        if(!isAdmin.value){
+            router.push('/user-cabinet')
+        }
+        else {router.push('/admin')}
+    }
+    else[
+        router.push('/auth')
+    ]
+}
 
 const setUserRole = (newRole) => { // Сеттер
     userRole.value = newRole;

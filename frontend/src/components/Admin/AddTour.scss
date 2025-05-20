@@ -15,6 +15,9 @@
       gap: 10px;
       label{
         font-size: 16px;
+        @media (max-width: 500px){
+          order: -1;
+        }
       }
       input[type='text']{
         height: 25px;
@@ -33,7 +36,11 @@
       }
       @media (max-width: 500px){
         flex-direction: column;
+        gap: 2px;
       }
+    }
+    @media(max-width: 500px){
+      gap: 20px;
     }
     .streams{
       p{
@@ -50,18 +57,23 @@
         }
         label{
           font-size: 16px;
+          @media (max-width:421px){
+            order: -1;
+          }
         }
         .stream-date{
           display: flex;
           gap: 10px;
           input{
             height: 25px;
+            max-width: 150px;
             display: flex;
-            min-width: 130px;
+            flex-grow: 1;
             padding: 5px;
           }
           @media (max-width: 421px){
             flex-direction: column;
+            gap: 2px;
           }
         }
         .stream-startPoint{
@@ -69,13 +81,14 @@
           gap: 10px;
           input{
             height: 25px;
-            display: flex;
-            min-width: 130px;
             max-width: 150px;
+            display: flex;
+            flex-grow: 1;
             padding: 5px;
           }
           @media (max-width: 421px){
             flex-direction: column;
+            gap: 2px;
           }
         }
       }

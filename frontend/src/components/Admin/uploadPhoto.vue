@@ -16,13 +16,7 @@
             <li v-for="(file, index) in selectedFiles" :key="index">
               {{ file.name }} ({{ formatBytes(file.size) }})
             </li>
-          </ul>
-          <button @click="uploadFiles" :disabled="uploading" class="sendPhoto">
-            {{ uploading ? 'Загрузка...' : 'Отправить' }}
-          </button>
-        </div>
-        <div v-if="uploadProgress > 0" class="uploadProgress">
-          Загрузка: {{ uploadProgress }}%
+          </ul> 
         </div>
         <div v-if="uploadMessage" class="uploadMessage">
           {{ uploadMessage }}
@@ -88,8 +82,8 @@ export default {
         return;
       }
 
-      this.uploadMessage = null;
       this.selectedFiles = files;
+      this.uploadFiles();
     },
     formatBytes(bytes, decimals = 2) {  // Функция для форматирования размера файла
       if (bytes === 0) return '0 Bytes';
@@ -99,36 +93,17 @@ export default {
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     },
-    async uploadFiles() {
+    uploadFiles() {
       this.uploading = true;
-      this.uploadProgress = 0;
       this.uploadMessage = null;
 
       const formData = new FormData();
       this.selectedFiles.forEach(file => {
         formData.append('images[]', file); // [] для множественной загрузки
       });
-      // Добавьте другие поля, если нужно
-      formData.append('description', 'Описание');
 
-      try {
-        const response = await axios.post('/api/upload', formData, {  //  <--- Ваш URL
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          onUploadProgress: progressEvent => { //  <--- Отслеживание прогресса
-            this.uploadProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          }
-        });
-
-        this.uploadMessage = 'Файлы успешно загружены!';
-        console.log('Success:', response.data);
-      } catch (error) {
-        this.uploadMessage = 'Ошибка при загрузке файлов.';
-        console.error('Error:', error);
-      } finally {
-        this.uploading = false;
-      }
+      this.$emit('uploadPhotos', formData)
+      this.uploading = false;
     },
   },
 };

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
 class ToursController extends Controller
 {   
@@ -56,7 +57,7 @@ class ToursController extends Controller
     public function adminGetStreams(Request $request){
         $payload = $this->getPayloadFromToken();
         if (isset($payload['err'])) {
-            return response()->json(['Ошибка авторизации' => $payload['err']]);
+            return response()->json(['msg' => $payload['err']], 403);
         }
         $roles = $payload->get('roles',[]);
         if (!in_array('admin', $roles)) {
@@ -109,12 +110,177 @@ class ToursController extends Controller
         $res = DB::delete('DELETE FROM users__streams WHERE id_user = ? AND id_stream = ?', [$id_user, $id_stream]);
         return response()->json(['result'=>$res]);
     }
+    public function adminCreateTour(Request $request){
+        $payload = $this->getPayloadFromToken();
+        if (isset($payload['err'])) {
+            return response()->json(['msg' => $payload['err']],402);
+        }
+        $roles = $payload->get('roles',[]);
+        if (!in_array('admin', $roles)) {
+            return response()->json(['msg' => 'Запрещённый ресурс'], 403);
+        }
 
-    public function adminGetTourInfo($id){
-        $id_tour = $id;
-        $tourInfo = DB::select('SELECT * FROM tours WHERE id_tour = 2', [$id_tour]);
-        $streams = DB::select('');
-        return response()->json(['id'=>$id_tour]);
+        $files = $request->file('images');
+        $jsonData = json_decode($request->input('json'), true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(['error' => 'Невалидный JSON'], 400);
+        }
+        
+        $tourInsertResult = DB::insert('INSERT INTO tours (`title`, `description`, `duration`, `route`, `includes`, `price`) 
+        VALUES (?, ?, ?, ?, ?, ?)', 
+        [$jsonData['tourTitle'], $jsonData['tourDescription'], $duration = $jsonData['tourDuration'], 
+        $route = $jsonData['tourRoute'], $jsonData['tourIncludes'], $price = $jsonData['tourPrice']]);
+
+        $id_tour = DB::getPdo()->lastInsertId();
+
+        foreach ($jsonData['tourStreams'] as $stream) {
+            DB::insert('INSERT INTO tours__streams (`id_tour`, `start_time`, `start_point`) VALUES (?, ?, ?)', 
+            [$id_tour, $stream['date'], $stream['start_point']]);
+        }
+
+        // Пример возврата или дальнейшей обработки
+        foreach ($files as $file) {
+            $extension = $file->getClientOriginalExtension(); // расширение без точки
+            $uuidName = (string) Str::uuid() . '.' . $extension; // например: "a1b2c3d4-...-e5f6.jpg"
+            
+            try{
+                $file->move(public_path('data'), $uuidName);
+            }
+            catch(\Exception $e){
+                return response()->json(['msg'=>$e]);
+            }
+            DB::insert('INSERT INTO tours__images (`id_tour`, `imagePath`) VALUES (?, ?)', 
+            [$id_tour, $uuidName]);
+        }
+        return response()->json(['msg'=>'Упешно']);
+    }
+    public function adminDeleteTour(Request $request){
+        $payload = $this->getPayloadFromToken();
+        if (isset($payload['err'])) {
+            return response()->json(['Ошибка авторизации' => $payload['err']]);
+        }
+        $roles = $payload->get('roles',[]);
+        if (!in_array('admin', $roles)) {
+            return response()->json(['error' => 'Запрещённый ресурс'], 403);
+        }
+
+        $id_tour =  $request->input('id_tour');
+        if($id_tour<15){
+            return response()->json(['msg'=>'В данный момент основные туры удалять запрещено'], 402);
+        }
+        
+        $images = DB::select('SELECT imagePath FROM tours__images WHERE id_tour = ?', [$id_tour]);
+        
+        $result = DB::delete('DELETE FROM tours WHERE id_tour = ?', [$id_tour]);
+        if(!$result){
+            return response()->json(['msg'=>'Ошибка удаления'], 500);
+        }
+
+        // Удаление картинок с диска
+        foreach ($images as $image) {
+            $imagePath = public_path('data/' . $image->imagePath);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        return response()->json(['msg'=>'Тур успешно удалён'], 200);
+    }
+    public function adminEditTour(Request $request){
+        $payload = $this->getPayloadFromToken();
+        if (isset($payload['err'])) {
+            return response()->json(['Ошибка авторизации' => $payload['err']], 402);
+        }
+        $roles = $payload->get('roles',[]);
+        if (!in_array('admin', $roles)) {
+            return response()->json(['error' => 'Запрещённый ресурс'], 403);
+        }
+
+
+        $files = $request->file('images');
+        $jsonData = json_decode($request->input('json'), true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(['error' => 'Невалидный JSON'], 400);
+        }
+
+
+        $streams = $jsonData['tourStreams'];
+        $id_tour = $jsonData['id_tour'];
+        if($id_tour<15){
+            return response()->json(['msg'=>'В данный момент основные туры редактировать запрещено'], 402);
+        }
+        if (!$id_tour || !is_array($streams)) {
+            return response()->json(['error' => 'Неверный формат данных'], 400);
+        }
+
+
+        // Сносим все картинки тура
+        $images = DB::select('SELECT imagePath FROM tours__images WHERE id_tour = ?', [$id_tour]);
+        DB::delete('DELETE FROM tours__images WHERE id_tour = ?', [$id_tour]);
+        foreach ($images as $image) {
+            $imagePath = public_path('data/' . $image->imagePath);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+        // Запиливаем новые картинки
+        foreach ($files as $file) {
+            $extension = $file->getClientOriginalExtension(); // расширение без точки
+            $uuidName = (string) Str::uuid() . '.' . $extension; // например: "a1b2c3d4-...-e5f6.jpg"
+            
+            try{
+                $file->move(public_path('data'), $uuidName);
+            }
+            catch(\Exception $e){
+                return response()->json(['msg'=>$e], 500);
+            }
+            DB::insert('INSERT INTO tours__images (`id_tour`, `imagePath`) VALUES (?, ?)', 
+            [$id_tour, $uuidName]);
+        }
+
+
+        // Собираем id_stream которые пришли
+        $idsToKeep = [];
+        foreach ($streams as $stream) {
+            if (isset($stream['id_stream'])) {
+                $idsToKeep[] = (int) $stream['id_stream'];
+            }
+        }
+
+        // Удаляем потоки, которые не пришли с фронта
+        if (count($idsToKeep) > 0) {
+            $placeholders = implode(',', array_fill(0, count($idsToKeep), '?'));
+            $params = array_merge([$id_tour], $idsToKeep);
+            DB::delete("DELETE FROM tours__streams WHERE id_tour = ? AND id_stream NOT IN ($placeholders)", $params);
+        } else {
+            // Если не пришёл ни один id_stream — удалить все
+            DB::delete("DELETE FROM tours__streams WHERE id_tour = ?", [$id_tour]);
+        }
+
+        // update или insert для каждого потока с фронта
+        foreach ($streams as $stream) {
+            $start_time = $stream['start_time'] ?? null;
+            $start_point = $stream['start_point'] ?? null;
+
+            if (!$start_time || !$start_point) {
+                continue;
+            }
+
+            if (isset($stream['id_stream'])) {
+                // UPDATE
+                DB::update(
+                    "UPDATE tours__streams SET start_time = ?, start_point = ? WHERE id_stream = ?",
+                    [$start_time, $start_point, $stream['id_stream']]
+                );
+            } else {
+                // INSERT
+                DB::insert(
+                    "INSERT INTO tours__streams (id_tour, start_time, start_point) VALUES (?, ?, ?)",
+                    [$id_tour, $start_time, $start_point]
+                );
+            }
+        }
+
     }
     public function getUserStreams(Request $request){
         $payload = $this->getPayloadFromToken();

@@ -11,4 +11,9 @@
         border-radius: 3px;
         font-size: 13.3px;
     }
+    @media(max-width: 456px){
+        flex-direction: column;
+       justify-content: flex-start;
+       margin: 0 10% 0 10%;
+    }
 }

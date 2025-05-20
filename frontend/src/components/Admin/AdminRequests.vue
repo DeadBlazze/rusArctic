@@ -59,13 +59,20 @@ export default {
     },
     methods:{
         async loadStreams(){
-            const response = await axios.get(import.meta.env.VITE_API_URL + '/admin-get-streams', {
-                headers:{
-                    Authorization: 'Bearer ' + this.token
-                }
-            })
-            this.streams = response.data;
-            this.sortTours()
+            try{
+                const response = await axios.get(import.meta.env.VITE_API_URL + '/admin-get-streams', {
+                    headers:{
+                        Authorization: 'Bearer ' + this.token
+                    }
+                })
+                this.streams = response.data;
+                this.sortTours()
+            }catch (error) {
+                const msg = error.response?.data?.msg || 'Ошибка валидациии токена или токен устарел';
+                alert(msg);
+                localStorage.removeItem('token')
+                this.$router.push('/auth')
+            }
         },
         deleteStream(id_stream, id_user) {
             this.deleteClick = { id_stream, id_user }

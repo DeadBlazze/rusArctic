@@ -12,7 +12,7 @@ import Dashboard from '../components/Admin/Dashboard.vue';
 import AddTour from '../components/Admin/AddTour.vue';
 import EditTour from '../components/Admin/EditTour.vue';
 import EditTourList from '../components/Admin/EditTourList.vue';
-
+import DeleteTour from '../components/Admin/DeleteTour.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -64,7 +64,11 @@ const router = createRouter({
         {
           path: 'edit-tour/:id_tour',
           component: EditTour
-        }
+        },
+        {
+          path: 'delete-tour',
+          component: DeleteTour
+        },
       ]
     },
   ],
