@@ -160,8 +160,8 @@ export default {
             sessionStorage.removeItem('tours')
             this.$router.push('/tours')
           } catch (error) {
-              console.error('Error:', error);
-              alert("Ошибка обновления тура: " + error.response.data?.msg || '')
+            console.error('Error:', error);
+            alert("Ошибка обновления тура: " + error.response.data?.msg || '')
           }
         },
         validateForm(){

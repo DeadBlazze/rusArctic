@@ -206,6 +206,14 @@ class ToursController extends Controller
 
         $streams = $jsonData['tourStreams'];
         $id_tour = $jsonData['id_tour'];
+
+        $tour_title = $jsonData['tourTitle'];
+        $tour_route = $jsonData['tourRoute'];
+        $tour_duration = $jsonData['tourDuration'];
+        $tour_description = $jsonData['tourDescription'];
+        $tour_price = $jsonData['tourPrice'];
+        $tour_includes = $jsonData['tourIncludes'];
+
         if($id_tour<15){
             return response()->json(['msg'=>'В данный момент основные туры редактировать запрещено'], 402);
         }
@@ -280,6 +288,10 @@ class ToursController extends Controller
                 );
             }
         }
+
+        DB::update("UPDATE tours SET title = ?, description = ?, duration = ?, route = ?, includes = ?, price = ? WHERE id_tour = ?",
+        [$tour_title, $tour_description, $tour_duration, $tour_route, $tour_includes, $tour_price, $id_tour]);
+        return response()->json(['msg'=>'Успешное обновление тура'],200);
 
     }
     public function getUserStreams(Request $request){
