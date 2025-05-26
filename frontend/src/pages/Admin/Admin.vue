@@ -2,10 +2,15 @@
 .lk
     router-link(to="/admin/dashboard") Редактор туров
     button.lk__button(@click="logout") Выйти
-router-view
+router-view(v-if="isReady")
 </template>
 <script>
 export default {
+    data() {
+        return {
+            isReady: false,
+        }
+    },
     methods:{
         logout(){
             localStorage.removeItem('token')
@@ -26,6 +31,14 @@ export default {
         if(!this.token){
             this.$router.push('/auth')
         }
+        const role = localStorage.getItem('userRole')
+        console.log(role)
+        if(role !== 'admin'){
+            alert('Запрещённый ресурс')
+            this.$router.push('/auth')
+            return
+        }
+        this.isReady = true;
     }
 }
 </script>

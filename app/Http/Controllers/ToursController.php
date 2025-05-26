@@ -61,7 +61,7 @@ class ToursController extends Controller
         }
         $roles = $payload->get('roles',[]);
         if (!in_array('admin', $roles)) {
-            return response()->json(['error' => 'Запрещённый ресурс'], 403);
+            return response()->json(['msg' => 'Запрещённый ресурс'], 403);
         }
         $allstreams = DB::select(
         'SELECT * FROM (SELECT id_tour, description, title, duration, route, includes, price FROM tours WHERE is_active = 1) AS activeTours

@@ -70,7 +70,6 @@ export default {
             }catch (error) {
                 const msg = error.response?.data?.msg || 'Ошибка валидациии токена или токен устарел';
                 alert(msg);
-                localStorage.removeItem('token')
                 this.$router.push('/auth')
             }
         },
