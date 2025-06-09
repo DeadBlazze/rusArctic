@@ -11,8 +11,6 @@ footer
                 a(href='tel:+78182653858') тел.(факс): +7(8182) 65-38-58
         .footer__images 
             img(src='../../assets/images/UI/icons/vk-icon.svg')
-            
-
 </template>
 <script>
 import './footer.scss'

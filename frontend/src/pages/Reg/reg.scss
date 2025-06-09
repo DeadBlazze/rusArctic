@@ -5,9 +5,11 @@
     min-height: 70vh;
     border-radius: 12px;
     .registration__container{
-        width: 300px;
+        width: 350px;
         background: #ffffff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         h2 {
             text-align: center;
             color: #1C274C;
