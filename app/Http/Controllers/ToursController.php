@@ -82,7 +82,7 @@ class ToursController extends Controller
         $id_stream = $request->input('id_stream');
         $payload = $this->getPayloadFromToken();
         if (isset($payload['err'])) {
-            return response()->json(['Ошибка авторизации' => $payload['err']],401);
+            return response()->json(['Ошибка проверки токена. Пройдите авторизацию' => $payload['err']],401);
         }
         $id_user = $payload->get('sub');
         $streamExist = DB::select('SELECT * FROM users__streams WHERE id_stream = ? AND id_user = ?', [$id_stream, $id_user]);
